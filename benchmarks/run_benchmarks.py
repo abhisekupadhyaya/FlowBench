@@ -1,1 +1,0 @@
-# Script to run benchmarks on all models
