@@ -2,6 +2,7 @@ import os
 import torch
 
 from codes.models.FNO import TensorizedFNO
+#from codes.models.models import CompressedCNO
 
 class Trainer:
     def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file=None):
