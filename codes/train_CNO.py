@@ -25,8 +25,6 @@ num_epochs = 2000
 criterion = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-print(4)
-
 # Create an instance of the TrainFNO class
 FNO_trainer = TrainCNO(model=model, optimizer=optimizer, loss_fn=criterion,
                       train_loader=train_loader, val_loader=val_loader, epochs=num_epochs,

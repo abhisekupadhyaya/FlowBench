@@ -57,9 +57,8 @@ class Trainer:
                 log_dir = os.path.dirname(self.log_file)
                 os.makedirs(log_dir, exist_ok=True)
 
-                log_file_handle = open(self.log_file, 'w')
-                log_file_handle.write(log_line + '\n')
-                log_file_handle.close()
+                with open(self.log_file, 'a') as log_file_handle:
+                    log_file_handle.write(log_line + '\n')
 
             if (epoch+1) % 1 == 0:
                 self.model.save_checkpoint(save_name=str(epoch+1))
