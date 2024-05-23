@@ -2,6 +2,7 @@ import os
 import torch
 
 from codes.models.FNO import TensorizedFNO
+from codes.models.CNO import CompressedCNO
 
 class Trainer:
     def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file=None):
@@ -27,7 +28,7 @@ class Trainer:
             self.optimizer.step()
             total_loss += loss.item()
 
-        return total_loss / len(self.train_loader)
+        return total_loss / len(self.train_loader.dataset)
 
     def evaluate(self):
         self.model.eval()
@@ -40,15 +41,10 @@ class Trainer:
                 loss = self.loss_fn(outputs, targets)
                 total_loss += loss.item()
 
-        return total_loss / len(self.val_loader)
+        return total_loss / len(self.val_loader.dataset)
 
     def train(self):
         best_val_loss = float('inf')
-
-        if self.log_file:
-            log_dir = os.path.dirname(self.log_file)
-            os.makedirs(log_dir, exist_ok=True)
-            log_file_handle = open(self.log_file, 'w')
 
         for epoch in range(self.epochs):
             train_loss = self.train_epoch()
@@ -57,14 +53,15 @@ class Trainer:
             log_line = f'Epoch {epoch+1}/{self.epochs}, Train Loss: {train_loss}, Val Loss: {val_loss}'
             print(log_line)
 
-            if self.log_file_handle:
-                log_file_handle.write(log_line + '\n')
+            if self.log_file:
+                log_dir = os.path.dirname(self.log_file)
+                os.makedirs(log_dir, exist_ok=True)
 
-            if (epoch+1) % 5 == 0:
+                with open(self.log_file, 'a') as log_file_handle:
+                    log_file_handle.write(log_line + '\n')
+
+            if (epoch+1) % 1 == 0:
                 self.model.save_checkpoint(save_name=str(epoch+1))
-
-        if log_file_handle:
-            log_file_handle.close()
 
         print("Training complete.")
 
@@ -72,7 +69,13 @@ class Trainer:
         self.model.load_checkpoint()
 
 class TrainFNO(Trainer):
-    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, loss_save = '../../experiments/fno/loss.txt'):
-        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, loss_save)
+    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file = 'experiments/fno/loss.txt'):
+        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file)
         if not isinstance(model, TensorizedFNO):
             raise TypeError("The model should be an instance of TensorizedFNO")
+
+class TrainCNO(Trainer):
+    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file = 'experiments/cno/loss.txt'):
+        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file)
+        if not isinstance(model, CompressedCNO):
+            raise TypeError("The model should be an instance of CompressedCNO")

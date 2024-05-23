@@ -42,7 +42,7 @@ class TensorizedFNO(nn.Module):
         """
         return self.tfno(x)
 
-    def save_checkpoint(self, save_name, save_folder='../../experiments/fno/checkpoints'):
+    def save_checkpoint(self, save_name, save_folder='experiments/fno/checkpoints'):
         """
         Saves the model weights to a checkpoint file.
 
@@ -53,7 +53,7 @@ class TensorizedFNO(nn.Module):
         os.makedirs(save_folder, exist_ok=True)
         torch.save(self.state_dict(), os.path.join(save_folder, f'{save_name}.pth'))
 
-    def load_checkpoint(self, save_name=None, save_folder='../../experiments/fno/checkpoints'):
+    def load_checkpoint(self, save_name=None, save_folder='experiments/fno/checkpoints'):
         """
         Loads the model weights from a checkpoint file.
 
