@@ -5,7 +5,7 @@ from codes.models.FNO import TensorizedFNO
 from codes.models.CNO import CompressedCNO
 
 class Trainer:
-    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file=None):
+    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_dir=None, checkpoint_frequency = 1):
         self.model = model.to(device)
         self.optimizer = optimizer
         self.loss_fn = loss_fn
@@ -13,7 +13,10 @@ class Trainer:
         self.val_loader = val_loader
         self.epochs = epochs
         self.device = device
-        self.log_file = log_file
+        self.log_dir = log_dir
+        self.checkpoint_frequency = checkpoint_frequency
+
+        self.log_file = os.path.join(log_dir, 'log.txt') if log_dir else None
 
     def train_epoch(self):
         self.model.train()
@@ -60,8 +63,9 @@ class Trainer:
                 with open(self.log_file, 'a') as log_file_handle:
                     log_file_handle.write(log_line + '\n')
 
-            if (epoch+1) % 1 == 0:
-                self.model.save_checkpoint(save_name=str(epoch+1))
+            if (epoch+1) % self.checkpoint_frequency == 0:
+                self.model.save_checkpoint(save_folder= os.path.join(log_dir, 'checkpoints') if log_dir else None, 
+                                           save_name=str(epoch+1))
 
         print("Training complete.")
 
@@ -69,13 +73,13 @@ class Trainer:
         self.model.load_checkpoint()
 
 class TrainFNO(Trainer):
-    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file = 'experiments/fno/loss.txt'):
-        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file)
+    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_dir = 'experiments/fno/', checkpoint_frequency = 1):
+        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_dir, checkpoint_frequency)
         if not isinstance(model, TensorizedFNO):
             raise TypeError("The model should be an instance of TensorizedFNO")
 
 class TrainCNO(Trainer):
-    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file = 'experiments/cno/loss.txt'):
-        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_file)
+    def __init__(self, model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_dir = 'experiments/cno/', checkpoint_frequency = 1):
+        super().__init__(model, optimizer, loss_fn, train_loader, val_loader, epochs, device, log_dir, checkpoint_frequency)
         if not isinstance(model, CompressedCNO):
             raise TypeError("The model should be an instance of CompressedCNO")

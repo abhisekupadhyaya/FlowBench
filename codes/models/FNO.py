@@ -8,7 +8,7 @@ class TensorizedFNO(nn.Module):
     """
     Tensorized Fourier Neural Operator (TFNO) model for learning mappings between function spaces.
     """
-    def __init__(self, n_modes, hidden_channels, in_channels, out_channels, projection_channels):
+    def __init__(self, n_modes, hidden_channels, in_channels, out_channels, projection_channels, n_layers = 4):
         """
         Initializes the TFNO model with specified parameters.
 
@@ -24,11 +24,12 @@ class TensorizedFNO(nn.Module):
         self.in_channels = in_channels
         self.out_channels = out_channels
         self.projection_channels = projection_channels
+        self.n_layers = n_layers
 
         # Initialize the TFNO with Tucker factorization
         self.tfno = TFNO(n_modes=self.n_modes, hidden_channels=self.hidden_channels,
                          in_channels=self.in_channels, out_channels=self.out_channels, 
-                         projection_channels = self.projection_channels)
+                         projection_channels = self.projection_channels, n_layers = self.n_layers)
 
     def forward(self, x):
         """

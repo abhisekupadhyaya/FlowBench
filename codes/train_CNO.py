@@ -14,7 +14,7 @@ LidDriven_dataset = LidDrivenDataset(
 # Create data loaders for training and validation
 train_loader, val_loader = LidDriven_dataset.create_dataloader(batch_size=10, split_fraction=0.8, shuffle=True)
 
-# Create an instance of the TensorizedFNO model
+# Create an instance of the CompressedCNO model
 model = CompressedCNO(in_dim=3, out_dim=3, N_layers=5, in_size=512, out_size=512)
 
 # Set the learning rate and number of epochs
@@ -25,9 +25,9 @@ num_epochs = 2000
 criterion = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-# Create an instance of the TrainFNO class
-FNO_trainer = TrainCNO(model=model, optimizer=optimizer, loss_fn=criterion,
+# Create an instance of the TrainCNO class
+CNO_trainer = TrainCNO(model=model, optimizer=optimizer, loss_fn=criterion,
                       train_loader=train_loader, val_loader=val_loader, epochs=num_epochs,
                       device=device)
 
-FNO_trainer.train()
+CNO_trainer.train()

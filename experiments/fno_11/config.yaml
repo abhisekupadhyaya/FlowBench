@@ -1,0 +1,16 @@
+model: "fno"
+file_path_x: 'data/harmonics/harmonics_lid_driven_cavity_X.npz'
+file_path_y: 'data/harmonics/harmonics_lid_driven_cavity_y.npz'
+batch_size: 5
+split_fraction: 0.8
+n_modes: 
+  - 128
+  - 128
+n_layers: 6
+in_channels: 3
+out_channels: 3
+hidden_channels: 128
+projection_channels: 128
+learning_rate: 0.001
+num_epochs: 100
+checkpoint_frequency: 20
