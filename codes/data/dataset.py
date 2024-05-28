@@ -18,6 +18,9 @@ class LidDrivenDataset(Dataset):
         # Load data from .npz files
         x = np.load(file_path_x)['data']
         y = np.load(file_path_y)['data']
+        #self.x = np.load(file_path_x)['data']
+        #self.y = np.load(file_path_y)['data']
+
         
         # Convert numpy arrays to PyTorch tensors
         self.x = torch.tensor(x, dtype=torch.float32)
@@ -43,6 +46,8 @@ class LidDrivenDataset(Dataset):
         """
         sample = self.x[idx]
         target = self.y[idx]
+        #sample = torch.tensor(self.x[idx], dtype=torch.float32)
+        #target = torch.tensor(self.y[idx], dtype=torch.float32)
         
         if self.transform:
             sample = self.transform(sample)

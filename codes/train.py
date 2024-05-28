@@ -58,7 +58,7 @@ def fno_train(config_data, folder):
     # Define loss function and optimizer
     criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-    
+
     # Create an instance of the TrainFNO class
     FNO_trainer = TrainFNO(model=model, optimizer=optimizer, loss_fn=criterion,
                            train_loader=train_loader, val_loader=val_loader, epochs=num_epochs,
