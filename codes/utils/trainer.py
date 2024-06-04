@@ -65,7 +65,7 @@ class Trainer:
 
         for epoch in range(self.epochs):
             train_loss = self.train_epoch()
-            val_loss, l2_loss, linf_loss = self.evaluate(epoch=epoch)
+            val_loss, l2_loss, linf_loss = self.evaluate()
 
             log_line = f'Epoch {epoch+1}/{self.epochs}, Train Loss: {train_loss}, Val Loss: {val_loss}, L2 Loss: {l2_loss}, LInf Loss: {linf_loss}'
             print(log_line)
