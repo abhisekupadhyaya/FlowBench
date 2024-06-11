@@ -17,13 +17,13 @@ def plot_ldc_like(y, y_hat, idx, plot_path):
 
     # Plot the ground truth
     im0 = axs[0, 0].imshow(y[idx][0], cmap='jet', origin='lower')
-    axs[0, 0].set_title('u')
+    axs[0, 0].set_title('u ground truth')
     
     im1 = axs[0, 1].imshow(y[idx][1], cmap='jet', origin='lower')
-    axs[0, 1].set_title('v')
+    axs[0, 1].set_title('v ground truth')
     
     im2 = axs[0, 2].imshow(y[idx][2], cmap='jet', origin='lower')
-    axs[0, 2].set_title('p')
+    axs[0, 2].set_title('p ground truth')
     
     # Plot the prediction
     im3 = axs[1, 0].imshow(y_hat[idx][0], cmap='jet', origin='lower')
