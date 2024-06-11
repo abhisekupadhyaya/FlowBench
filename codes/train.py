@@ -45,6 +45,10 @@ def fno_train(config_data, folder):
     train_loader, val_loader = LidDriven_dataset.create_dataloader(batch_size= config_data['batch_size'], 
                                                                    split_fraction= config_data['split_fraction'], 
                                                                    shuffle=True)
+
+    os.makedirs(os.path.join(folder, 'dataset'), exist_ok=True)
+    torch.save(train_loader.dataset, os.path.join(folder, 'dataset','train.pt'))
+    torch.save(val_loader.dataset, os.path.join(folder, 'dataset','val.pt'))
     
     # Set the learning rate and number of epochs
     learning_rate = config_data['learning_rate']
@@ -76,6 +80,10 @@ def cno_train(config_data, folder):
     train_loader, val_loader = LidDriven_dataset.create_dataloader(batch_size= config_data['batch_size'], 
                                                                    split_fraction= config_data['split_fraction'], 
                                                                    shuffle=True)
+                                                                   
+    os.makedirs(os.path.join(folder, 'dataset'), exist_ok=True)
+    torch.save(train_loader.dataset, os.path.join(folder, 'dataset','train.pt'))
+    torch.save(val_loader.dataset, os.path.join(folder, 'dataset','val.pt'))
     
     # Set the learning rate and number of epochs
     learning_rate = config_data['learning_rate']
